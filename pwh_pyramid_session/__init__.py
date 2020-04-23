@@ -69,7 +69,8 @@ def includeme(config):
 
     secret = unhexlify(settings['pwh.pyramid_session.secret'].strip())
     factory = EncryptedCookieSessionFactory(secret, cookie_name=settings['pwh.pyramid_session.cookie_name'],
-                                            timeout=86400)
+                                            timeout=int(settings['pwh.pyramid_session.timeout'])
+                                            if 'pwh.pyramid_session.timeout' in settings else 1200)
     config.set_session_factory(factory)
 
     config.add_request_method(
