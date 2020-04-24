@@ -1,8 +1,6 @@
-import json
-
-from base64 import urlsafe_b64encode
 from binascii import unhexlify
 from decorator import decorator
+from pwh_pyramid_routes import encode_route
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid_nacl_session import EncryptedCookieSessionFactory
 from sqlalchemy import and_
@@ -11,16 +9,6 @@ from sqlalchemy import and_
 UserModel = None
 login_route = None
 store_current = True
-
-
-def encode_route(request):
-    """Jinja2 filter that returns the current route as a JSON object, which is then URL-safe base64 encoded."""
-    if request.matched_route:
-        data = {'route': request.matched_route.name,
-                'params': request.matchdict,
-                'query': list(request.params.items())}
-        return urlsafe_b64encode(json.dumps(data).encode('utf-8')).decode()
-    return None
 
 
 def get_current_user(request):
